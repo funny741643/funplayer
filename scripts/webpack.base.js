@@ -1,4 +1,3 @@
-const { rename } = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 const ESLintPlugin = require("eslint-webpack-plugin");
@@ -20,8 +19,7 @@ module.exports = (env) => {
         output: {
             libraryTarget: "umd",
             library: rename(env.target),
-            globalObject: this,
-            umdNameDefine: true,
+            globalObject: "this",
         },
 
         resolve: {

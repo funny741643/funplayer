@@ -21,6 +21,5 @@ module.exports = {
     error,
     success,
     info,
-    run,
     getPkgDir,
 };

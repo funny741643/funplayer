@@ -5,6 +5,7 @@ const { getPkgDir } = require("./utils");
 const baseConfig = require("./webpack.base");
 
 module.exports = (env) => {
+    console.log(env);
     const pkgDir = getPkgDir(env.target);
     const fixtureDir = path.resolve(__dirname, "..", "fixtures");
     const targetDir = path.resolve(fixtureDir, env.fixture || env.target);
@@ -15,13 +16,10 @@ module.exports = (env) => {
         target: ["web", "es5"],
         entry: [
             "webpack-dev-server/client",
-            path.resolve(pkgDir, "src", "index.ts"),
+            path.resolve(pkgDir, "index.ts"),
         ],
         devServer: {
-            static: [
-                fixtureDir,
-                path.resolve(__dirname, "..", "packages"),
-            ],
+            static: [fixtureDir, path.resolve(__dirname, "..", "packages")],
             host: "0.0.0.0",
         },
 

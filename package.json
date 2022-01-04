@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve:funplayer": "cross-env NODE_ENV=development webpack serve --config scripts/webpack.dev.js --env target=funplayer"
+    "serve:funplayer": "cross-env NODE_ENV=development webpack serve --config scripts/webpack.dev.js --env target=funplayer",
+    "serve:test": "cross-env NODE_ENV=development webpack serve --config scripts/webpack.base.js --env target=funplayer"
   },
   "repository": {
     "type": "git",
