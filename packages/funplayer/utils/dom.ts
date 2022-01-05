@@ -4,6 +4,8 @@ import { CLASS_PREFIX } from "../constants";
 // e.g. 'div#id.className' to get 'div', 'id', '.className'
 const SELECTOR_REGEX = /([\w-]+)?(?:#([\w-]+))?((?:\.(?:[\w-]+))*)/;
 
+const svgNS = "http://www.w3.org/2000/svg";
+
 export function getEle(
     el: HTMLElement | string | undefined,
 ): HTMLElement | null {
@@ -61,4 +63,55 @@ export function createEle<T extends HTMLElement>(
     }
 
     return ele as T;
+}
+
+export function removeEle(el: Element): void {
+    if (!el) return;
+    if (el.remove) {
+        el.remove();
+    } else if (el.parentNode) {
+        el.parentNode.removeChild(el);
+    }
+}
+
+export function show(node: HTMLElement | SVGElement): void {
+    // eslint-disable-next-line no-param-reassign
+    node.style.display = "";
+}
+
+export function hide(node: HTMLElement | SVGElement): void {
+    // eslint-disable-next-line no-param-reassign
+    node.style.display = "none";
+}
+
+export function addClass<T extends Element>(dom: T, cls = "", prefix = CLASS_PREFIX): T {
+    // eslint-disable-next-line no-param-reassign
+    cls = cls.trim();
+    if (!cls) return dom;
+    if (dom.classList) {
+        cls.split(" ").forEach((c) => dom.classList.add(`${prefix}_${c}`));
+    } else {
+        const oldCls = (dom.className && (dom.className as any).baseVal) || "";
+        dom.setAttribute(
+            "class",
+            (oldCls ? `${oldCls} ` : "")
+          + cls
+              .split(" ")
+              .map((c) => prefix + c)
+              .join(" "),
+        );
+    }
+    return dom;
+}
+
+export function createSvg(cls?: string, d?: string, viewBox = "0 0 1024 1024"): SVGSVGElement {
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", viewBox);
+    if (cls) addClass(svg, cls);
+    if (d) {
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttributeNS(null, "d", d);
+        svg.appendChild(path);
+    }
+    return svg;
 }
