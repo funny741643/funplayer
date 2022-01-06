@@ -1,5 +1,7 @@
 // import { DomListener } from './dom';
 
+import { DomListener } from "./dom";
+
 export interface Dispose {
     dispose: () => void;
 }
@@ -21,4 +23,16 @@ export function dispose(key: any): void {
         disposeMap.get(key)?.forEach((item) => item.dispose());
         disposeMap.delete(key);
     }
+}
+
+export function addDisposeListener<K extends keyof GlobalEventHandlersEventMap>(
+    key: any,
+    node: EventTarget,
+    type: K,
+    handler: EventListener,
+    options?: boolean | AddEventListenerOptions,
+): DomListener {
+    const domListener = new DomListener(node, type, handler, options);
+    if (key) addDispose(key, domListener);
+    return domListener;
 }

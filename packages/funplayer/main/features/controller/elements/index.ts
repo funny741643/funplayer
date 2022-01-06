@@ -2,6 +2,7 @@ import { addDispose, Dispose } from "../../../../utils/dispose";
 import { createEle } from "../../../../utils/dom";
 import { DomNode } from "../../../../utils/domNode";
 import { isString } from "../../../../utils/judge";
+import { Tooltip } from "../../../components/tooltip";
 import { Player } from "../../../player";
 import { IControllerEle } from "../types";
 
@@ -9,7 +10,6 @@ export class ControllerEle extends DomNode {
     private controllerEles: IControllerEle[] = [];
 
     constructor(
-        // eslint-disable-next-line no-unused-vars
         private player: Player,
         container: HTMLElement,
         ctEles?: (IControllerEle | string)[],
@@ -24,9 +24,24 @@ export class ControllerEle extends DomNode {
                     frag.appendChild(ele.el);
                     this.controllerEles.push(ele);
                 }
-                this.el.appendChild(frag);
             });
+            this.updateTooltipPos();
+            this.el.appendChild(frag);
         }
+    }
+
+    updateTooltipPos() {
+        const last = this.controllerEles.length - 1;
+        this.controllerEles.forEach((ele, i) => {
+            if (ele.tooltip) {
+                ele.tooltip.resetPos();
+                if (i === 0) {
+                    ele.tooltip.setLeft();
+                } else if (i === last) {
+                    ele.tooltip.setRight();
+                }
+            }
+        });
     }
 
     private getControllerEle(ele: IControllerEle | string): IControllerEle | void {
@@ -44,11 +59,19 @@ export class ControllerEle extends DomNode {
             // eslint-disable-next-line no-param-reassign
             if (!ele.el) ele.el = createEle("div");
 
-            if (ele.mounted) return;
+            if (ele.mounted) {
+                if (ele.tooltip) {
+                    ele.tooltip.resetPos();
+                }
+                return;
+            }
         }
 
+        let tooltip: Tooltip | undefined;
+        if (ele.tip) tooltip = new Tooltip(ele.el, ele.tip);
         if (ele.init) {
-            ele.init(this.player, undefined);
+            if (ele.init.length >= 2 && !tooltip) tooltip = new Tooltip(ele.el);
+            ele.init(this.player, tooltip as Tooltip);
         }
         if (ele.dispose) addDispose(this, ele as Dispose);
 

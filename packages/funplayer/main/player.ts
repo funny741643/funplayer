@@ -4,9 +4,10 @@ import { getEle, createEle } from "../utils/dom";
 import { IPlayerOptions } from "../types";
 import { CLASS_PREFIX } from "../constants";
 import { processOptions } from "./options";
-import { setVideoAttrs } from "./auxiliary";
-// import { registerNameMap } from "./auxiliary";
+// import { setVideoAttrs } from "./auxiliary";
+import { setVideoAttrs, registerNameMap } from "./auxiliary";
 import { IControllerEle } from "./features/controller/types";
+import { Controller } from "./features/controller";
 
 export class Player extends EventEmitter implements Dispose {
     container: HTMLElement | null;
@@ -16,6 +17,8 @@ export class Player extends EventEmitter implements Dispose {
     el: HTMLDivElement;
 
     readonly video: HTMLVideoElement;
+
+    private readonly controller: Controller;
 
     private readonly controllerNameMap: Record<string, IControllerEle> = Object.create(null);
 
@@ -32,12 +35,14 @@ export class Player extends EventEmitter implements Dispose {
         this.video = createEle("video.video");
         // console.log(this.options);
         if (this.options.src) {
-            this.options.videoProps.src = this.options.src;
             this.options.videoProps.muted = true;
+            this.options.videoProps.src = this.options.src;
         }
         setVideoAttrs(this.video, this.options.videoProps);
         this.el.appendChild(this.video);
-        // registerNameMap(this);
+        registerNameMap(this);
+
+        this.controller = new Controller(this, this.el);
     }
 
     mount(container?: IPlayerOptions["container"]): void {
@@ -48,6 +53,10 @@ export class Player extends EventEmitter implements Dispose {
 
     play(): Promise<void> | void {
         return this.video.play();
+    }
+
+    pause(): Promise<void> | void {
+        return this.video.pause();
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -64,4 +73,12 @@ export class Player extends EventEmitter implements Dispose {
     getControllerEle(id: string): IControllerEle | undefined {
         return this.controllerNameMap[id];
     }
+
+    toggle = () => {
+        if (this.paused) {
+            this.play();
+        } else {
+            this.pause();
+        }
+    };
 }

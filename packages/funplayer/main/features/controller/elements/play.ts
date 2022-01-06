@@ -3,6 +3,9 @@ import { IControllerEle } from "../types";
 import { DomNode } from "../../../../utils/domNode";
 import { hide, show } from "../../../../utils/dom";
 import { Icon } from "../../icons";
+import { Tooltip } from "../../../components/tooltip";
+import { addDispose, addDisposeListener } from "../../../../utils/dispose";
+import { EVENT } from "../../../../constants";
 
 class Play extends DomNode implements IControllerEle {
     readonly id = "play";
@@ -11,9 +14,9 @@ class Play extends DomNode implements IControllerEle {
 
     private pauseIcon!: HTMLElement;
 
-    tooltip!: any;
+    tooltip!: Tooltip;
 
-    init(player: Player, tooltip: any) {
+    init(player: Player, tooltip: Tooltip) {
         this.tooltip = tooltip;
         this.playIcon = this.el.appendChild(Icon.play());
         this.pauseIcon = this.el.appendChild(Icon.pause());
@@ -23,6 +26,9 @@ class Play extends DomNode implements IControllerEle {
         } else {
             this.onPlay();
         }
+        addDispose(this, player.on(EVENT.PLAY, this.onPlay));
+        addDispose(this, player.on(EVENT.PAUSE, this.onPause));
+        addDisposeListener(this, this.el, "click", player.toggle);
     }
 
     private onPlay = () => {

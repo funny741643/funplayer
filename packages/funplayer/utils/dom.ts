@@ -1,5 +1,6 @@
 import { isString, isHTMLElement } from "./judge";
 import { CLASS_PREFIX } from "../constants";
+import { Dispose } from "./dispose";
 
 // e.g. 'div#id.className' to get 'div', 'id', '.className'
 const SELECTOR_REGEX = /([\w-]+)?(?:#([\w-]+))?((?:\.(?:[\w-]+))*)/;
@@ -104,6 +105,11 @@ export function addClass<T extends Element>(dom: T, cls = "", prefix = CLASS_PRE
     return dom;
 }
 
+export function removeClass<T extends Element>(dom: T, cls = "", prefix = CLASS_PREFIX) {
+    dom.classList.remove(`${prefix}_${cls}`);
+    return dom;
+}
+
 export function createSvg(cls?: string, d?: string, viewBox = "0 0 1024 1024"): SVGSVGElement {
     const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("viewBox", viewBox);
@@ -114,4 +120,25 @@ export function createSvg(cls?: string, d?: string, viewBox = "0 0 1024 1024"): 
         svg.appendChild(path);
     }
     return svg;
+}
+
+export class DomListener implements Dispose {
+    constructor(
+        private node: EventTarget,
+        private type: string,
+        // eslint-disable-next-line no-unused-vars
+        private handler: (e: any) => void,
+        // eslint-disable-next-line no-unused-vars
+        private options?: boolean | AddEventListenerOptions,
+    ) {
+        node.addEventListener(type, handler, this.options);
+    }
+
+    dispose(): void {
+        if (!this.handler) return;
+        this.node.removeEventListener(this.type, this.handler, this.options);
+        this.node = null!;
+        this.handler = null!;
+        this.options = null!;
+    }
 }

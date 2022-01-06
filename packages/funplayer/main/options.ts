@@ -1,6 +1,9 @@
 import { IPlayerOptions } from "../types";
 
 const defaultOptions: Partial<IPlayerOptions> = {
+    controller: {
+        eles: ["play"],
+    },
     videoProps: {
         crossorigin: "anonymous",
         preload: "auto",
