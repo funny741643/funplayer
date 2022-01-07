@@ -1,0 +1,36 @@
+$class-prefix: "funplayer" !default;
+
+@mixin hover {
+    @media not all and (hover: none) {
+        @content;
+    }
+}
+
+@mixin progress-buff-played {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: 0 0;
+}
+
+@mixin bottom-click-area {
+    position: relative;
+    width: 36px;
+    height: 100%;
+    padding: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    fill: rgba(255, 255, 255, 0.9);
+}
+
+@mixin check-icon($w: 5px, $h: 12px, $borderWidth: 1px, $color: #fff) {
+    display: inline-block;
+    width: $w;
+    height: $h;
+    border-right: $borderWidth solid $color;
+    border-bottom: $borderWidth solid $color;
+    transform: rotate(45deg);
+}

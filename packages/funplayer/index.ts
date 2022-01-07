@@ -1,5 +1,7 @@
-// eslint-disable-next-line import/no-unresolved
-export { Player as default } from "./main/player";
+import "./style/index.scss";
 
 // eslint-disable-next-line import/no-unresolved
-export * from "./main/player";
+export { Player as default } from "./src/player";
+
+// eslint-disable-next-line import/no-unresolved
+export * from "./src/player";

@@ -1,4 +1,4 @@
-import { IPlayerOptions } from "../types";
+import { IPlayerOptions } from "./types";
 
 const defaultOptions: Partial<IPlayerOptions> = {
     controller: {

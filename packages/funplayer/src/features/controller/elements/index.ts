@@ -1,7 +1,7 @@
-import { addDispose, Dispose } from "../../../../utils/dispose";
-import { createEle } from "../../../../utils/dom";
-import { DomNode } from "../../../../utils/domNode";
-import { isString } from "../../../../utils/judge";
+import { addDispose, Dispose } from "../../../utils/dispose";
+import { createEle } from "../../../utils/dom";
+import { DomNode } from "../../../utils/domNode";
+import { isString } from "../../../utils/judge";
 import { Tooltip } from "../../../components/tooltip";
 import { Player } from "../../../player";
 import { IControllerEle } from "../types";

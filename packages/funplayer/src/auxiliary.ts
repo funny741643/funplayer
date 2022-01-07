@@ -1,5 +1,5 @@
 import Player from "..";
-import { IPlayerOptions } from "../types";
+import { IPlayerOptions } from "./types";
 import { playControllerEle } from "./features/controller/elements/play";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {

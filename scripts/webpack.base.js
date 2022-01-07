@@ -14,7 +14,7 @@ module.exports = (env) => {
     const pkg = require(path.resolve(pkgDir, "package.json"));
 
     const config = {
-        entry: path.resolve(pkgDir, "src", "index.ts"),
+        entry: path.resolve(pkgDir, "index.ts"),
 
         output: {
             libraryTarget: "umd",
@@ -57,7 +57,8 @@ module.exports = (env) => {
                 {
                     test: /\.(s[ac]|c)ss$/i,
                     use: [
-                        MiniCssExtractPlugin.loader,
+                        "style-loader",
+                        // MiniCssExtractPlugin.loader,
                         "css-loader",
                         "postcss-loader",
                         "sass-loader",

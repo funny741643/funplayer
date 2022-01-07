@@ -1,8 +1,8 @@
-import { EventEmitter } from "../utils/eventmitter";
-import { Dispose } from "../utils/dispose";
-import { getEle, createEle } from "../utils/dom";
-import { IPlayerOptions } from "../types";
-import { CLASS_PREFIX } from "../constants";
+import { EventEmitter } from "./utils/eventmitter";
+import { Dispose } from "./utils/dispose";
+import { getEle, createEle } from "./utils/dom";
+import { IPlayerOptions } from "./types";
+import { CLASS_PREFIX } from "./constants";
 import { processOptions } from "./options";
 // import { setVideoAttrs } from "./auxiliary";
 import { setVideoAttrs, registerNameMap } from "./auxiliary";
@@ -35,7 +35,7 @@ export class Player extends EventEmitter implements Dispose {
         this.video = createEle("video.video");
         // console.log(this.options);
         if (this.options.src) {
-            this.options.videoProps.muted = true;
+            // this.options.videoProps.muted = true;
             this.options.videoProps.src = this.options.src;
         }
         setVideoAttrs(this.video, this.options.videoProps);
@@ -43,6 +43,7 @@ export class Player extends EventEmitter implements Dispose {
         registerNameMap(this);
 
         this.controller = new Controller(this, this.el);
+        // this.controller.show();
     }
 
     mount(container?: IPlayerOptions["container"]): void {

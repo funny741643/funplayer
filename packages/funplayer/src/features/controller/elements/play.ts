@@ -1,11 +1,11 @@
 import { Player } from "../../../player";
 import { IControllerEle } from "../types";
-import { DomNode } from "../../../../utils/domNode";
-import { hide, show } from "../../../../utils/dom";
+import { DomNode } from "../../../utils/domNode";
+import { hide, show } from "../../../utils/dom";
 import { Icon } from "../../icons";
 import { Tooltip } from "../../../components/tooltip";
-import { addDispose, addDisposeListener } from "../../../../utils/dispose";
-import { EVENT } from "../../../../constants";
+import { addDispose, addDisposeListener } from "../../../utils/dispose";
+import { EVENT } from "../../../constants";
 
 class Play extends DomNode implements IControllerEle {
     readonly id = "play";

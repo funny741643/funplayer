@@ -5,7 +5,6 @@ const { getPkgDir } = require("./utils");
 const baseConfig = require("./webpack.base");
 
 module.exports = (env) => {
-    console.log(env);
     const pkgDir = getPkgDir(env.target);
     const fixtureDir = path.resolve(__dirname, "..", "fixtures");
     const targetDir = path.resolve(fixtureDir, env.fixture || env.target);

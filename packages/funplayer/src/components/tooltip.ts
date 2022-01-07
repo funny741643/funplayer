@@ -1,7 +1,7 @@
 import {
     addClass, removeClass, hide, show,
-} from "../../utils/dom";
-import { DomNode } from "../../utils/domNode";
+} from "../utils/dom";
+import { DomNode } from "../utils/domNode";
 
 const classLeft = "tooltip-left";
 const classRight = "tooltip-right";

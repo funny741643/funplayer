@@ -1,4 +1,4 @@
-import { IControllerEle } from "../main/features/controller/types";
+import { IControllerEle } from "../features/controller/types";
 
 export interface IController {
     eles: (IControllerEle | string)[];

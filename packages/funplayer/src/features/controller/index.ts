@@ -1,8 +1,8 @@
-import { EVENT, TIME } from "../../../constants";
-import { IController } from "../../../types";
-import { addDispose } from "../../../utils/dispose";
-import { addClass, createEle, removeClass } from "../../../utils/dom";
-import { DomNode } from "../../../utils/domNode";
+import { EVENT, TIME } from "../../constants";
+import { IController } from "../../types";
+import { addDispose } from "../../utils/dispose";
+import { addClass, createEle, removeClass } from "../../utils/dom";
+import { DomNode } from "../../utils/domNode";
 import { Player } from "../../player";
 import { ControllerEle } from "./elements";
 
@@ -59,9 +59,10 @@ export class Controller extends DomNode {
     };
 
     showThenFade = (): void => {
+        // eslint-disable-next-line no-debugger
         this.show();
         clearTimeout(this.showTimer);
-        this.showTimer = setTimeout(this.tryHide, TIME.CONTROLLER_BAR_HIDE);
+        // this.showTimer = setTimeout(this.tryHide, TIME.CONTROLLER_BAR_HIDE);
     };
 
     tryHide = (): void => {

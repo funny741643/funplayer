@@ -1,5 +1,5 @@
 import Player from "../../..";
-import { Dispose } from "../../../utils/dispose";
+import { Dispose } from "../../utils/dispose";
 
 export interface IControllerEle extends Partial<Dispose> {
     el: HTMLElement;
