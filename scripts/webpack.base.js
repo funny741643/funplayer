@@ -1,8 +1,16 @@
 const path = require("path");
+const glob = require("glob");
 const webpack = require("webpack");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurgeCSSPlugin = require("purgecss-webpack-plugin");
 const { getPkgDir } = require("./utils");
+
+const PATHS = {
+    src: path.join(__dirname, "src"),
+};
+
+// 蛇形转为大驼峰式
 const rename = (target) => {
     return target
         .replace(/^funplayer/i, "FunPlayer")
@@ -16,6 +24,13 @@ module.exports = (env) => {
     const config = {
         entry: path.resolve(pkgDir, "index.ts"),
 
+        /**
+         * 当webpack去构建一个可以被其他模块导入使用的库时需要用到他们
+         * libraryTarget: 配置以何种方式导出库
+         * output.library: 配置导出库的名称
+         * 以umd方式去生成js文件，这样使得包既可以npm的方式引入又可以script标签的方式去引入
+         * globalObject: "this": To make UMD build available on both browsers and Node.js
+         */
         output: {
             libraryTarget: "umd",
             library: rename(env.target),
@@ -57,8 +72,8 @@ module.exports = (env) => {
                 {
                     test: /\.(s[ac]|c)ss$/i,
                     use: [
-                        "style-loader",
-                        // MiniCssExtractPlugin.loader,
+                        // "style-loader",
+                        MiniCssExtractPlugin.loader,
                         "css-loader",
                         "postcss-loader",
                         "sass-loader",
@@ -70,6 +85,9 @@ module.exports = (env) => {
         plugins: [
             new MiniCssExtractPlugin({
                 filename: "[name].[hash:8].css",
+            }),
+            new PurgeCSSPlugin({
+                paths: glob.sync(`${PATHS.src}/**/*`, {nodir: true})
             }),
             new ESLintPlugin({
                 extensions: [".js", ".ts", ".d.ts"],
