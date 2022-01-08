@@ -26,6 +26,7 @@ export class ControllerEle extends DomNode {
                 }
             });
             this.updateTooltipPos();
+            // 挂载注册的所有控件
             this.el.appendChild(frag);
         }
     }
@@ -51,6 +52,7 @@ export class ControllerEle extends DomNode {
         return ele;
     }
 
+    // 初始化一个video控件
     private initControllerEle = (ele: IControllerEle | string): IControllerEle | void => {
         // eslint-disable-next-line no-param-reassign
         ele = this.getControllerEle(ele) as IControllerEle;

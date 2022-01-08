@@ -1,3 +1,5 @@
+// 播放器配置参数
+
 import { IPlayerOptions } from "./types";
 
 const defaultOptions: Partial<IPlayerOptions> = {

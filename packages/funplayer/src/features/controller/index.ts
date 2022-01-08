@@ -20,6 +20,7 @@ export class Controller extends DomNode {
         super(container, "div.controller");
         this.gradientBottom = container.appendChild(createEle("div.controller_gradient_bottom"));
 
+        // 创建控件元素
         this.controllerEles = {
             eles: addDispose(
                 this,

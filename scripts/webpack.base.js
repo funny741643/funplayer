@@ -86,9 +86,9 @@ module.exports = (env) => {
             new MiniCssExtractPlugin({
                 filename: "[name].[hash:8].css",
             }),
-            new PurgeCSSPlugin({
-                paths: glob.sync(`${PATHS.src}/**/*`, {nodir: true})
-            }),
+            // new PurgeCSSPlugin({
+            //     paths: glob.sync(`${PATHS.src}/**/*`, {nodir: true})
+            // }),
             new ESLintPlugin({
                 extensions: [".js", ".ts", ".d.ts"],
             }),

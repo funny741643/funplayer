@@ -1,3 +1,5 @@
+// 播放器的辅助函数
+
 import Player from "..";
 import { IPlayerOptions } from "./types";
 import { playControllerEle } from "./features/controller/elements/play";
