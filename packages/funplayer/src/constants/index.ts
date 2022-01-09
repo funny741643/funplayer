@@ -5,6 +5,9 @@ export const EVENT = {
     PAUSE: "Pause",
     CONTROLLER_SHOW: "ControlShow",
     CONTROLLER_HIDE: "ControlHide",
+    LOADED_METADATA: "loadedmetadata",
+    UPDATE_SIZE: "updateSize",
+    TIME_UPDATE: "timeUpdate",
 } as const;
 
 export const TIME = {

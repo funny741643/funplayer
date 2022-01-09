@@ -3,13 +3,18 @@
 import { IPlayerOptions } from "./types";
 
 const defaultOptions: Partial<IPlayerOptions> = {
+    // 控件配置项
     controller: {
+        progress: ["process"],
         eles: ["play"],
     },
     videoProps: {
         crossorigin: "anonymous",
         preload: "auto",
         playsinline: "true",
+    },
+    progressOptions: {
+        indicator: true,
     },
 };
 
@@ -20,6 +25,10 @@ export function processOptions(opts?: IPlayerOptions): Required<IPlayerOptions> 
         videoProps: {
             ...defaultOptions.videoProps,
             ...opts?.videoProps,
+        },
+        processOptions: {
+            ...defaultOptions.progressOptions,
+            ...opts?.progressOptions,
         },
     };
     return res as Required<IPlayerOptions>;

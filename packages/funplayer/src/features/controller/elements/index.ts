@@ -14,6 +14,7 @@ export class ControllerEle extends DomNode {
         container: HTMLElement,
         ctEles?: (IControllerEle | string)[],
     ) {
+        // 创建一个控件元素el
         super(container, "div.controller_ele");
         if (ctEles) {
             const frag = document.createDocumentFragment();
@@ -54,6 +55,7 @@ export class ControllerEle extends DomNode {
 
     // 初始化一个video控件
     private initControllerEle = (ele: IControllerEle | string): IControllerEle | void => {
+        console.log(ele);
         // eslint-disable-next-line no-param-reassign
         ele = this.getControllerEle(ele) as IControllerEle;
 

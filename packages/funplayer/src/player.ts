@@ -4,8 +4,7 @@ import { getEle, createEle } from "./utils/dom";
 import { IPlayerOptions } from "./types";
 import { CLASS_PREFIX } from "./constants";
 import { processOptions } from "./options";
-// import { setVideoAttrs } from "./auxiliary";
-import { setVideoAttrs, registerNameMap } from "./auxiliary";
+import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";
 import { IControllerEle } from "./features/controller/types";
 import { Controller } from "./features/controller";
 
@@ -46,6 +45,8 @@ export class Player extends EventEmitter implements Dispose {
         }
         // 添加video元素属性
         setVideoAttrs(this.video, this.options.videoProps);
+        // 设置事件监听器
+        markingEvent(this);
         // 为video盒子节点挂载video元素
         this.el.appendChild(this.video);
 
@@ -72,6 +73,18 @@ export class Player extends EventEmitter implements Dispose {
 
     // eslint-disable-next-line class-methods-use-this
     dispose(): void {}
+
+    get loaded(): boolean {
+        return this.video.readyState >= 3;
+    }
+
+    get duration(): number {
+        return this.video.duration || 0;
+    }
+
+    get buffered(): TimeRanges {
+        return this.video.buffered;
+    }
 
     get paused(): boolean {
         return this.video.paused;

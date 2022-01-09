@@ -22,6 +22,10 @@ export class Controller extends DomNode {
 
         // 创建控件元素
         this.controllerEles = {
+            progress: addDispose(
+                this,
+                new ControllerEle(player, this.el, player.options.controller.progress),
+            ),
             eles: addDispose(
                 this,
                 new ControllerEle(player, this.el, player.options.controller.eles),

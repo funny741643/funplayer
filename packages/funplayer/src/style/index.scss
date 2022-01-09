@@ -652,7 +652,7 @@
             will-change: transform;
         }
 
-        &_buff {
+        &_buffer {
             @include progress-buff-played;
             background: var(--progress-buff-bg);
         }
