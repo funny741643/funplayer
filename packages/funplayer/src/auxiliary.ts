@@ -6,6 +6,7 @@ import { playControllerEle } from "./features/controller/elements/play";
 import { addDispose, Dispose } from "./utils/dispose";
 import { EVENT } from "./constants";
 import { processControllerEle } from "./features/controller/progress";
+import { throttle } from "./utils/tool";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {
     if (!opts) return;
@@ -28,12 +29,26 @@ function mark(player: Player, ori: string, event: string): Dispose {
     };
 }
 
+function markThrottle(
+    player: Player,
+    ori: string,
+    event: string,
+    dom: HTMLElement | Window = player.video,
+): Dispose {
+    const fn = (ev: Event) => player.emit(event, ev);
+    dom.addEventListener(ori, throttle(fn));
+    return { dispose: () => dom.removeEventListener(ori, fn) };
+}
+
 export function markingEvent(player: Player): void {
     const dis = (d: Dispose) => addDispose(player, d);
 
     dis(mark(player, "play", EVENT.PLAY));
     dis(mark(player, "pause", EVENT.PAUSE));
     dis(mark(player, "loadedmetadata", EVENT.LOADED_METADATA));
+    dis(markThrottle(player, "timeupdate", EVENT.TIME_UPDATE));
+    dis(markThrottle(player, "progress", EVENT.PROGRESS));
+    dis(markThrottle(player, "resize", EVENT.UPDATE_SIZE, window));
 
     player.on(EVENT.LOADED_METADATA, () => {
         if (player.video.paused) {

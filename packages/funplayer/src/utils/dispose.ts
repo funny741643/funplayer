@@ -13,7 +13,7 @@ export function getDisposeMap(): Map<any, Array<Dispose>> {
     return disposeMap;
 }
 
-// 为注销器集合，增添注销器
+// 给注销器集合，增添注销器
 export function addDispose<T extends Dispose>(key: any, d: T): T {
     if (!disposeMap.has(key)) disposeMap.set(key, []);
     disposeMap.get(key)?.push(d);

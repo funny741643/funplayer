@@ -23,6 +23,7 @@ export function throttle(fn: Function, ctx?: any, ...argument: any[]): any {
     };
 }
 
+// 设置数字区间
 export function adsorb(n: number, lower = 0, upper = 1): number {
     return Math.max(Math.min(n, upper), lower);
 }

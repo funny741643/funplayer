@@ -7,6 +7,7 @@ import { processOptions } from "./options";
 import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";
 import { IControllerEle } from "./features/controller/types";
 import { Controller } from "./features/controller";
+import { adsorb } from "./utils/tool";
 
 export class Player extends EventEmitter implements Dispose {
     // 播放器容器节点
@@ -74,6 +75,18 @@ export class Player extends EventEmitter implements Dispose {
     // eslint-disable-next-line class-methods-use-this
     dispose(): void {}
 
+    public seek(seconds: number): void {
+        this.video.currentTime = adsorb(seconds, 0, this.duration);
+    }
+
+    public eachBuffer(fn: (start: number, end: number) => boolean | void): void {
+        for (let l = this.buffered.length, i = l - 1; i >= 0; i--) {
+            if (fn(this.buffered.start(i), this.buffered.end(i))) {
+                break;
+            }
+        }
+    }
+
     get loaded(): boolean {
         return this.video.readyState >= 3;
     }
@@ -88,6 +101,27 @@ export class Player extends EventEmitter implements Dispose {
 
     get paused(): boolean {
         return this.video.paused;
+    }
+
+    get ended(): boolean {
+        return this.video.ended;
+    }
+
+    get playing(): boolean {
+        return !this.paused && !this.ended;
+    }
+
+    // 获取当前播放时间
+    get currentTime(): number {
+        return this.video.currentTime;
+    }
+
+    // 设置当前播放时间
+    set currentTime(n: number) {
+        if (!this.duration) return;
+        const diff = n - this.video.currentTime;
+        if (!diff) return;
+        this.video.currentTime = adsorb(n, 0, this.duration);
     }
 
     // 注册控件元素

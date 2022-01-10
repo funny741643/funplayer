@@ -43,7 +43,14 @@ class Process extends DomNode implements IControllerEle {
         this.rect = addDispose(this, new Rect(this.bars, player));
 
         addDispose(this, new Drag(this.el, this.onDragStart, this.onDragging, this.onDragEnd));
-        // addDispose(this, player.on(EVENT.TIME_UPDATE, this.updatePlayedBar));
+        addDispose(this, player.on(EVENT.TIME_UPDATE, this.updatePlayedBar));
+        addDispose(this, player.on(EVENT.PROGRESS, this.updateBufferBar));
+        addDispose(
+            this,
+            player.on(EVENT.UPDATE_SIZE, () => {
+                if (!player.playing) this.resetPlayedBar();
+            }),
+        );
         addDisposeListener(
             this,
             this.el,
@@ -58,6 +65,32 @@ class Process extends DomNode implements IControllerEle {
         }
     }
 
+    private updatePlayedBar = (): void => {
+        // eslint-disable-next-line no-useless-return
+        if (this.dragging) return;
+        this.setPlayedBarLength(this.player.currentTime / this.player.duration);
+    };
+
+    // eslint-disable-next-line consistent-return
+    private updateBufferBar = (): void => {
+        const bufferLen = this.player.buffered.length;
+
+        if (!bufferLen) return this.setBufferBarLength(0);
+
+        const curTime = this.player.currentTime;
+        let percentage = 0;
+
+        // eslint-disable-next-line consistent-return
+        this.player.eachBuffer((start, end) => {
+            if (start <= curTime && end >= curTime) {
+                percentage = end / this.player.duration;
+                return true;
+            }
+        });
+
+        this.setBufferBarLength(percentage);
+    };
+
     private onDragStart = (ev: PointerEvent): void => {
         this.dragging = true;
         this.rect.update();
@@ -71,15 +104,26 @@ class Process extends DomNode implements IControllerEle {
 
     private onDragEnd = (ev: PointerEvent): void => {
         this.dragging = false;
+        this.player.seek(this.getCurrentTime(ev.pageX));
     };
+
+    private setBufferBarLength = (percentage: number): void => {
+        this.bufferBar.style.transform = `scaleX(${adsorb(percentage)})`;
+    };
+
+    private resetPlayedBar() {
+        this.setPlayedBarLength(this.player.currentTime / this.player.duration);
+    }
 
     private setPlayedBarLength(percentage: number): void {
         this.playedBar.style.transform = `scale(${adsorb(percentage)})`;
         this.dot.style.left = `${adsorb(percentage * this.rect.width, 0, this.rect.width || 0)}px`;
     }
-    // private updatePlayedBar(): void {
 
-    // }
+    // 根据已播进度条长度获取已播时长
+    private getCurrentTime(x: number): number {
+        return ((x - this.rect.x) / this.rect.width) * this.player.duration;
+    }
 }
 
 export const processControllerEle = () => new Process();
