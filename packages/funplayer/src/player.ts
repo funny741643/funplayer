@@ -27,6 +27,8 @@ export class Player extends EventEmitter implements Dispose {
     // video控件映射
     private readonly controllerNameMap: Record<string, IControllerEle> = Object.create(null);
 
+    private prevVolume = 0.5;
+
     constructor(opts?: IPlayerOptions) {
         super();
         // 处理配置参数，添加默认配置，以及合并用户添加的配置参数
@@ -111,6 +113,24 @@ export class Player extends EventEmitter implements Dispose {
         return !this.paused && !this.ended;
     }
 
+    get volume(): number {
+        return this.video.volume;
+    }
+
+    set volume(n: number) {
+        this.video.volume = adsorb(n);
+        if (this.muted && n > 0) this.muted = false;
+    }
+
+    get muted(): boolean {
+        return this.video.muted || this.volume === 0;
+    }
+
+    set muted(v: boolean) {
+        this.video.muted = v;
+        if (v) this.volume = 0;
+    }
+
     // 获取当前播放时间
     get currentTime(): number {
         return this.video.currentTime;
@@ -142,4 +162,13 @@ export class Player extends EventEmitter implements Dispose {
             this.pause();
         }
     };
+
+    toggleVolume(): void {
+        if (this.muted) {
+            this.volume = this.prevVolume || 1;
+        } else {
+            this.prevVolume = this.volume;
+            this.volume = 0;
+        }
+    }
 }

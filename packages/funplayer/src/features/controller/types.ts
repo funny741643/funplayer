@@ -1,4 +1,5 @@
 import Player from "../../..";
+import { Tooltip } from "../../components/tooltip";
 import { Dispose } from "../../utils/dispose";
 
 export interface IControllerEle extends Partial<Dispose> {
@@ -7,6 +8,6 @@ export interface IControllerEle extends Partial<Dispose> {
     tips?: string;
     mounted?: boolean;
     // eslint-disable-next-line no-unused-vars
-    init?: (player: Player, tooltip: any) => void;
+    init?: (player: Player, tooltip: Tooltip) => void;
     [key: string]: any;
 }

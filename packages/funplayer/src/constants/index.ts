@@ -10,6 +10,9 @@ export const EVENT = {
 
     TIME_UPDATE: "TimeUpdate",
     PROGRESS: "Progress",
+
+    VOLUME_CHANGE: "VolumeChange",
+    POPOVER_SHOW_CHANGE: "PopoverShowChange",
 } as const;
 
 export const TIME = {

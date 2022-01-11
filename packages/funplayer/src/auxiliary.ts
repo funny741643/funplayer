@@ -7,6 +7,7 @@ import { addDispose, Dispose } from "./utils/dispose";
 import { EVENT } from "./constants";
 import { processControllerEle } from "./features/controller/progress";
 import { throttle } from "./utils/tool";
+import { volumeControllerEle } from "./features/controller/elements/volume";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {
     if (!opts) return;
@@ -19,6 +20,7 @@ export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["vid
 export function registerNameMap(player: Player) {
     player.registerControllerEle(playControllerEle());
     player.registerControllerEle(processControllerEle());
+    player.registerControllerEle(volumeControllerEle());
 }
 
 function mark(player: Player, ori: string, event: string): Dispose {
@@ -46,6 +48,7 @@ export function markingEvent(player: Player): void {
     dis(mark(player, "play", EVENT.PLAY));
     dis(mark(player, "pause", EVENT.PAUSE));
     dis(mark(player, "loadedmetadata", EVENT.LOADED_METADATA));
+    dis(mark(player, "volumechange", EVENT.VOLUME_CHANGE));
     dis(markThrottle(player, "timeupdate", EVENT.TIME_UPDATE));
     dis(markThrottle(player, "progress", EVENT.PROGRESS));
     dis(markThrottle(player, "resize", EVENT.UPDATE_SIZE, window));

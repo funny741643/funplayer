@@ -33,7 +33,7 @@ export function addDisposeListener<K extends keyof GlobalEventHandlersEventMap>(
     key: any,
     node: EventTarget,
     type: K,
-    handler: EventListener,
+    handler: (event: GlobalEventHandlersEventMap[K]) => void,
     options?: boolean | AddEventListenerOptions,
 ): DomListener {
     const domListener = new DomListener(node, type, handler, options);
