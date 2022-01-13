@@ -72,7 +72,6 @@ class Volume extends DomNode implements IControllerEle {
         });
 
         addDisposeListener(this, this.el, "mouseenter", () => {
-            console.log("show");
             this.showBars();
         });
         addDisposeListener(this, this.el, "mouseleave", () => {

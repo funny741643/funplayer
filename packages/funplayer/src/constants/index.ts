@@ -13,6 +13,9 @@ export const EVENT = {
 
     VOLUME_CHANGE: "VolumeChange",
     POPOVER_SHOW_CHANGE: "PopoverShowChange",
+
+    ENTER_FULLSCREEN: "EnterFullscreen",
+    EXIT_FULLSCREEN: "ExitFullscreen",
 } as const;
 
 export const TIME = {

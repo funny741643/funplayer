@@ -8,6 +8,7 @@ import { EVENT } from "./constants";
 import { processControllerEle } from "./features/controller/progress";
 import { throttle } from "./utils/tool";
 import { volumeControllerEle } from "./features/controller/elements/volume";
+import { fullScreenControllerEle } from "./features/controller/elements/fullscreen";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {
     if (!opts) return;
@@ -21,6 +22,7 @@ export function registerNameMap(player: Player) {
     player.registerControllerEle(playControllerEle());
     player.registerControllerEle(processControllerEle());
     player.registerControllerEle(volumeControllerEle());
+    player.registerControllerEle(fullScreenControllerEle());
 }
 
 function mark(player: Player, ori: string, event: string): Dispose {

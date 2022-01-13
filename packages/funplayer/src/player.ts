@@ -1,5 +1,5 @@
 import { EventEmitter } from "./utils/eventmitter";
-import { Dispose } from "./utils/dispose";
+import { addDispose, Dispose } from "./utils/dispose";
 import { getEle, createEle } from "./utils/dom";
 import { IPlayerOptions } from "./types";
 import { CLASS_PREFIX } from "./constants";
@@ -8,6 +8,7 @@ import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";
 import { IControllerEle } from "./features/controller/types";
 import { Controller } from "./features/controller";
 import { adsorb } from "./utils/tool";
+import { Fullscreen } from "./features/bind/fullScreen";
 
 export class Player extends EventEmitter implements Dispose {
     // 播放器容器节点
@@ -20,6 +21,8 @@ export class Player extends EventEmitter implements Dispose {
 
     // video节点
     readonly video: HTMLVideoElement;
+
+    readonly fullscreen: Fullscreen;
 
     // video控件类
     private readonly controller: Controller;
@@ -54,6 +57,8 @@ export class Player extends EventEmitter implements Dispose {
         this.el.appendChild(this.video);
 
         registerNameMap(this);
+
+        this.fullscreen = addDispose(this, new Fullscreen(this));
 
         // 实例化video控件类
         this.controller = new Controller(this, this.el);

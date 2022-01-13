@@ -6,7 +6,7 @@ const defaultOptions: Partial<IPlayerOptions> = {
     // 控件配置项
     controller: {
         progress: ["process"],
-        eles: ["play", "volume"],
+        eles: ["play", "volume", "fullScreen"],
     },
     videoProps: {
         crossorigin: "anonymous",
