@@ -27,6 +27,7 @@ export class Fullscreen implements Dispose {
                 } else {
                     evt = EVENT.EXIT_FULLSCREEN;
                 }
+                console.log(evt);
                 this.player.emit(evt);
             },
         );
@@ -70,6 +71,17 @@ export class Fullscreen implements Dispose {
         );
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    get exitFullscreen(): Document["exitFullscreen"] {
+        return (
+            Document.prototype.exitFullscreen
+          || (Document.prototype as any).webkitExitFullscreen
+          || (Document.prototype as any).cancelFullScreen
+          || (Document.prototype as any).mozCancelFullScreen
+          || (Document.prototype as any).msExitFullscreen
+        );
+    }
+
     get isActive(): boolean {
         return this.fullscreenElement === this.target;
     }
@@ -80,9 +92,34 @@ export class Fullscreen implements Dispose {
     }
 
     enter(): void {
-        this.requestFullscreen.call(this.target, { navigationUI: "hide" });
-        // this.player.emit(EVENT.UPDATE_SIZE);
+        if (isIOS) {
+            (this.target as any).webkitEnterFullscreen();
+        } else {
+            this.requestFullscreen.call(this.target, { navigationUI: "hide" });
+            this.player.emit(EVENT.UPDATE_SIZE);
+        }
     }
+
+    exit(): boolean {
+        if (!this.isActive) return false;
+        if (isIOS) {
+            (this.target as any).webkitExitFullscreen();
+        } else {
+            this.exitFullscreen.call(document);
+            this.player.emit(EVENT.UPDATE_SIZE);
+        }
+        return true;
+    }
+
+    toggle = (isClick?: boolean): void => {
+        this.player.clearToggleDelay(isClick);
+
+        if (this.isActive) {
+            this.exit();
+        } else {
+            this.enter();
+        }
+    };
 
     dispose(): void {
         if (!this.player) return;

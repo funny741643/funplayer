@@ -110,6 +110,10 @@ export function removeClass<T extends Element>(dom: T, cls = "", prefix = CLASS_
     return dom;
 }
 
+export function containClass(dom: Element, cls: string, prefix = CLASS_PREFIX): boolean {
+    return dom.classList.contains(`${prefix}_${cls}`);
+}
+
 export function createSvg(cls?: string, d?: string, viewBox = "0 0 1024 1024"): SVGSVGElement {
     const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("viewBox", viewBox);

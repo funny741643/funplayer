@@ -9,6 +9,8 @@ import { processControllerEle } from "./features/controller/progress";
 import { throttle } from "./utils/tool";
 import { volumeControllerEle } from "./features/controller/elements/volume";
 import { fullScreenControllerEle } from "./features/controller/elements/fullscreen";
+import { webFullscreenControllerEle } from "./features/controller/elements/web-fullscreen";
+import { timeControllerEle } from "./features/controller/elements/time";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {
     if (!opts) return;
@@ -23,6 +25,8 @@ export function registerNameMap(player: Player) {
     player.registerControllerEle(processControllerEle());
     player.registerControllerEle(volumeControllerEle());
     player.registerControllerEle(fullScreenControllerEle());
+    player.registerControllerEle(webFullscreenControllerEle());
+    player.registerControllerEle(timeControllerEle());
 }
 
 function mark(player: Player, ori: string, event: string): Dispose {
@@ -51,6 +55,7 @@ export function markingEvent(player: Player): void {
     dis(mark(player, "pause", EVENT.PAUSE));
     dis(mark(player, "loadedmetadata", EVENT.LOADED_METADATA));
     dis(mark(player, "volumechange", EVENT.VOLUME_CHANGE));
+    dis(mark(player, "durationchange", EVENT.DURATION_CHANGE));
     dis(markThrottle(player, "timeupdate", EVENT.TIME_UPDATE));
     dis(markThrottle(player, "progress", EVENT.PROGRESS));
     dis(markThrottle(player, "resize", EVENT.UPDATE_SIZE, window));

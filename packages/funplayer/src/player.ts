@@ -8,7 +8,8 @@ import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";
 import { IControllerEle } from "./features/controller/types";
 import { Controller } from "./features/controller";
 import { adsorb } from "./utils/tool";
-import { Fullscreen } from "./features/bind/fullScreen";
+import { Fullscreen } from "./features/bind/fullscreen";
+import { WebFullscreen } from "./features/bind/web-fullscreen";
 
 export class Player extends EventEmitter implements Dispose {
     // 播放器容器节点
@@ -24,6 +25,8 @@ export class Player extends EventEmitter implements Dispose {
 
     readonly fullscreen: Fullscreen;
 
+    readonly webFullscreen: WebFullscreen;
+
     // video控件类
     private readonly controller: Controller;
 
@@ -31,6 +34,10 @@ export class Player extends EventEmitter implements Dispose {
     private readonly controllerNameMap: Record<string, IControllerEle> = Object.create(null);
 
     private prevVolume = 0.5;
+
+    toggleDelayTimer: NodeJS.Timeout | null;
+
+    toggleDelayFlag: boolean;
 
     constructor(opts?: IPlayerOptions) {
         super();
@@ -58,10 +65,14 @@ export class Player extends EventEmitter implements Dispose {
 
         registerNameMap(this);
 
+        this.webFullscreen = addDispose(this, new WebFullscreen(this));
         this.fullscreen = addDispose(this, new Fullscreen(this));
 
         // 实例化video控件类
         this.controller = new Controller(this, this.el);
+
+        this.toggleDelayFlag = false;
+        this.toggleDelayTimer = null;
     }
 
     // 挂载video组件
@@ -176,4 +187,15 @@ export class Player extends EventEmitter implements Dispose {
             this.volume = 0;
         }
     }
+
+    clearToggleDelay = (isClick?: boolean) => {
+        // eslint-disable-next-line no-unused-expressions
+        this.toggleDelayTimer && clearTimeout(this.toggleDelayTimer);
+        this.toggleDelayTimer = null;
+        if (isClick) {
+            this.toggleDelayFlag = false;
+        } else {
+            this.toggleDelayFlag = true;
+        }
+    };
 }

@@ -9,6 +9,7 @@ export const EVENT = {
     UPDATE_SIZE: "UpdateSize",
 
     TIME_UPDATE: "TimeUpdate",
+    DURATION_CHANGE: "DurationChange",
     PROGRESS: "Progress",
 
     VOLUME_CHANGE: "VolumeChange",
@@ -16,6 +17,8 @@ export const EVENT = {
 
     ENTER_FULLSCREEN: "EnterFullscreen",
     EXIT_FULLSCREEN: "ExitFullscreen",
+    WEB_ENTER_FULLSCREEN: "WebEnterFullscreen",
+    WEB_EXIT_FULLSCREEN: "WebExitFullscreen",
 } as const;
 
 export const TIME = {
