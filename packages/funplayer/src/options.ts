@@ -6,8 +6,10 @@ const defaultOptions: Partial<IPlayerOptions> = {
     // 控件配置项
     controller: {
         progress: ["process"],
-        eles: ["play", "volume", "fullScreen", "web-fullscreen", "time"],
+        eles: ["play", "volume", "fullScreen", "web-fullscreen", "settings", "time"],
     },
+    // 设置选项
+    settings: ["mirroring", "speed"],
     videoProps: {
         crossorigin: "anonymous",
         preload: "auto",

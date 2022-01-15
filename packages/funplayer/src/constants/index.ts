@@ -19,6 +19,8 @@ export const EVENT = {
     EXIT_FULLSCREEN: "ExitFullscreen",
     WEB_ENTER_FULLSCREEN: "WebEnterFullscreen",
     WEB_EXIT_FULLSCREEN: "WebExitFullscreen",
+
+    MOUNTED: "Mounted",
 } as const;
 
 export const TIME = {

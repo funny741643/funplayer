@@ -2,14 +2,15 @@ import { EventEmitter } from "./utils/eventmitter";
 import { addDispose, Dispose } from "./utils/dispose";
 import { getEle, createEle } from "./utils/dom";
 import { IPlayerOptions } from "./types";
-import { CLASS_PREFIX } from "./constants";
+import { CLASS_PREFIX, EVENT } from "./constants";
 import { processOptions } from "./options";
 import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";
-import { IControllerEle } from "./features/controller/types";
+import { IControllerEle, ISettingItem } from "./features/controller/types";
 import { Controller } from "./features/controller";
 import { adsorb } from "./utils/tool";
 import { Fullscreen } from "./features/bind/fullscreen";
 import { WebFullscreen } from "./features/bind/web-fullscreen";
+import { isString } from "./utils/judge";
 
 export class Player extends EventEmitter implements Dispose {
     // 播放器容器节点
@@ -33,11 +34,15 @@ export class Player extends EventEmitter implements Dispose {
     // video控件映射
     private readonly controllerNameMap: Record<string, IControllerEle> = Object.create(null);
 
+    private readonly settingNamedMap: Record<string, ISettingItem> = Object.create(null);
+
     private prevVolume = 0.5;
 
     toggleDelayTimer: NodeJS.Timeout | null;
 
     toggleDelayFlag: boolean;
+
+    readonly settingItems: ISettingItem[];
 
     constructor(opts?: IPlayerOptions) {
         super();
@@ -68,6 +73,11 @@ export class Player extends EventEmitter implements Dispose {
         this.webFullscreen = addDispose(this, new WebFullscreen(this));
         this.fullscreen = addDispose(this, new Fullscreen(this));
 
+        this.settingItems = this.options.settings.map((item) => {
+            if (isString(item)) return this.settingNamedMap[item];
+            return item;
+        }).filter(Boolean);
+
         // 实例化video控件类
         this.controller = new Controller(this, this.el);
 
@@ -80,6 +90,7 @@ export class Player extends EventEmitter implements Dispose {
         if (container) this.container = getEle(container) || this.container;
         if (!this.container) return;
         this.container.appendChild(this.el);
+        this.emit(EVENT.MOUNTED);
     }
 
     public play(): Promise<void> | void {
@@ -138,6 +149,14 @@ export class Player extends EventEmitter implements Dispose {
         if (this.muted && n > 0) this.muted = false;
     }
 
+    get playbackRate(): number {
+        return this.video.playbackRate;
+    }
+
+    set playbackRate(n: number) {
+        this.video.playbackRate = n;
+    }
+
     get muted(): boolean {
         return this.video.muted || this.volume === 0;
     }
@@ -168,6 +187,14 @@ export class Player extends EventEmitter implements Dispose {
     // 获取控件元素
     getControllerEle(id: string): IControllerEle | undefined {
         return this.controllerNameMap[id];
+    }
+
+    registerSettingItem(item: ISettingItem, id?: string) {
+        this.settingNamedMap[id || item.id] = item;
+    }
+
+    getSettingItem(id: string): ISettingItem | undefined {
+        return this.settingNamedMap[id];
     }
 
     // 切换

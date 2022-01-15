@@ -11,6 +11,9 @@ import { volumeControllerEle } from "./features/controller/elements/volume";
 import { fullScreenControllerEle } from "./features/controller/elements/fullscreen";
 import { webFullscreenControllerEle } from "./features/controller/elements/web-fullscreen";
 import { timeControllerEle } from "./features/controller/elements/time";
+import { settingsControllerEle } from "./features/controller/elements/settings";
+import { MirroringSettingItem } from "./features/setting-item/mirroring";
+import { speedSettingItem } from "./features/setting-item/speed";
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: IPlayerOptions["videoProps"]): void {
     if (!opts) return;
@@ -27,6 +30,9 @@ export function registerNameMap(player: Player) {
     player.registerControllerEle(fullScreenControllerEle());
     player.registerControllerEle(webFullscreenControllerEle());
     player.registerControllerEle(timeControllerEle());
+    player.registerControllerEle(settingsControllerEle());
+    player.registerSettingItem(MirroringSettingItem());
+    player.registerSettingItem(speedSettingItem());
 }
 
 function mark(player: Player, ori: string, event: string): Dispose {

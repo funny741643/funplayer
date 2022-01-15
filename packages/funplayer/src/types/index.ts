@@ -1,4 +1,4 @@
-import { IControllerEle } from "../features/controller/types";
+import { IControllerEle, ISettingItem } from "../features/controller/types";
 
 export interface IController {
     progress: (IControllerEle | string)[];
@@ -19,4 +19,5 @@ export interface IPlayerOptions {
     videoProps?: Record<string, any>;
     controller?: IController;
     progressOptions?: IProgressOptions;
+    settings?: (ISettingItem | string)[];
 }

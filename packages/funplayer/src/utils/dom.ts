@@ -114,6 +114,25 @@ export function containClass(dom: Element, cls: string, prefix = CLASS_PREFIX): 
     return dom.classList.contains(`${prefix}_${cls}`);
 }
 
+export function toggleClass(
+    dom: Element,
+    cls: string,
+    force?: boolean,
+    prefix = CLASS_PREFIX,
+): boolean {
+    // eslint-disable-next-line no-param-reassign
+    cls = `${prefix}_${cls}`;
+    if (force) {
+        dom.classList.add(cls);
+        return true;
+    }
+    if (!force) {
+        dom.classList.remove(cls);
+        return true;
+    }
+    return dom.classList.toggle(cls, force);
+}
+
 export function createSvg(cls?: string, d?: string, viewBox = "0 0 1024 1024"): SVGSVGElement {
     const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("viewBox", viewBox);
@@ -149,4 +168,22 @@ export class DomListener implements Dispose {
         this.handler = null!;
         this.options = null!;
     }
+}
+
+export function getElementSize(dom: HTMLElement): Pick<DOMRect, "width" | "height"> {
+    const clone = dom.cloneNode(true) as HTMLElement;
+    clone.style.cssText += ";position:absolute;opacity:0";
+    clone.removeAttribute("hidden");
+
+    const parent = dom.parentNode || document.body;
+    parent.appendChild(clone);
+
+    const rect = clone.getBoundingClientRect();
+
+    parent.removeChild(clone);
+
+    return {
+        width: rect.width,
+        height: rect.height,
+    };
 }
