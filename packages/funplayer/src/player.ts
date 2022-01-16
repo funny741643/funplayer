@@ -1,7 +1,7 @@
 import { EventEmitter } from "./utils/eventmitter";
 import { addDispose, Dispose } from "./utils/dispose";
 import { getEle, createEle } from "./utils/dom";
-import { IPlayerOptions } from "./types";
+import { IController, IPlayerOptions } from "./types";
 import { CLASS_PREFIX, EVENT } from "./constants";
 import { processOptions } from "./options";
 import { setVideoAttrs, registerNameMap, markingEvent } from "./auxiliary";

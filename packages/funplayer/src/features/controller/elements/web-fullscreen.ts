@@ -4,6 +4,7 @@ import { Player } from "../../../player";
 import { addDispose, addDisposeListener } from "../../../utils/dispose";
 import { hide, show } from "../../../utils/dom";
 import { DomNode } from "../../../utils/domNode";
+import { I18n, WEB_EXIT_FULL_SCREEN, WEB_FULL_SCREEN } from "../../i18n";
 import { Icon } from "../../icons";
 import { IControllerEle } from "../types";
 
@@ -33,11 +34,13 @@ class WebFullscreen extends DomNode implements IControllerEle {
     enter = () => {
         show(this.exitIcon);
         hide(this.enterIcon);
+        this.toolTip.html = I18n.trans(WEB_EXIT_FULL_SCREEN);
     };
 
     exit = () => {
         show(this.enterIcon);
         hide(this.exitIcon);
+        this.toolTip.html = I18n.trans(WEB_FULL_SCREEN);
     };
 }
 

@@ -6,6 +6,7 @@ import { Icon } from "../../icons";
 import { Tooltip } from "../../../components/tooltip";
 import { addDispose, addDisposeListener } from "../../../utils/dispose";
 import { EVENT } from "../../../constants";
+import { I18n, PAUSE, PLAY } from "../../i18n";
 
 class Play extends DomNode implements IControllerEle {
     readonly id = "play";
@@ -34,11 +35,13 @@ class Play extends DomNode implements IControllerEle {
     private onPlay = () => {
         show(this.pauseIcon);
         hide(this.playIcon);
+        this.tooltip.html = I18n.trans(PAUSE);
     };
 
     private onPause = () => {
         show(this.playIcon);
         hide(this.pauseIcon);
+        this.tooltip.html = I18n.trans(PLAY);
     };
 }
 

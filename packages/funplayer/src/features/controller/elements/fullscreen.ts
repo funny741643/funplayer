@@ -4,6 +4,7 @@ import { Player } from "../../../player";
 import { addDispose, addDisposeListener } from "../../../utils/dispose";
 import { hide, show } from "../../../utils/dom";
 import { DomNode } from "../../../utils/domNode";
+import { EXIT_FULL_SCREEN, FULL_SCREEN, I18n } from "../../i18n";
 import { Icon } from "../../icons";
 import { IControllerEle } from "../types";
 
@@ -36,11 +37,13 @@ class FullScreen extends DomNode implements IControllerEle {
     enter = () => {
         show(this.exitIcon);
         hide(this.enterIcon);
+        this.toolTip.html = I18n.trans(EXIT_FULL_SCREEN);
     };
 
     exit = () => {
         show(this.enterIcon);
         hide(this.exitIcon);
+        this.toolTip.html = I18n.trans(FULL_SCREEN);
     };
 }
 
