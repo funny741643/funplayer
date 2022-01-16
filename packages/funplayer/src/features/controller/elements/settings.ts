@@ -35,8 +35,11 @@ class Settings extends DomNode implements IControllerEle {
         addClass(this.el, "controller_settings");
         this.items = player.settingItems;
         this.el.appendChild(Icon.settings());
+
         this.stuffing = this.el.appendChild(createEle("div.controller_settings_stuffing"));
+        // 挂载悬浮框组件
         this.popover = new Popover(this.el, { willChange: "width, height" });
+        // 设置项的顶层元素
         this.homeEl = this.popover.panelEl.appendChild(createEle("div"));
 
         addDisposeListener(this, this.el, "mouseenter", () => {
@@ -59,6 +62,7 @@ class Settings extends DomNode implements IControllerEle {
         this.renderHome();
     }
 
+    // 隐藏选项元素，挂载设置项的顶层元素
     private showHomePage(opt?: HTMLElement): void {
         // eslint-disable-next-line no-param-reassign
         if (opt) opt.style.display = "none";
@@ -73,6 +77,7 @@ class Settings extends DomNode implements IControllerEle {
         });
     }
 
+    // 展示选项页面
     private showOptionPage(opt: HTMLElement): void {
         this.homeEl.style.display = "none";
         // eslint-disable-next-line no-param-reassign
@@ -88,6 +93,7 @@ class Settings extends DomNode implements IControllerEle {
         this.currentOptionEl = opt;
     }
 
+    // 这里会渲染所有配置了的设置项元素
     private renderHome(): void {
         this.items.forEach((item) => {
             const el = !item._switch && !item._selectedEl && !item._optionEl ? createEle("div.controller_settings_item") : null;
@@ -97,11 +103,13 @@ class Settings extends DomNode implements IControllerEle {
                 if (item.type !== "switch") el.appendChild(createEle("div.spacer"));
             }
 
+            // 设置项类型为switch，挂载开关组件
             if (item.type === "switch") {
                 // eslint-disable-next-line no-param-reassign
                 if (!item._switch) item._switch = new Switch(el!, item.checked);
             }
 
+            // 设置项类型为select
             if (item.type === "select") {
                 if (!item.options || !item.options.length) return;
                 if (!item._selectedEl) {
@@ -115,6 +123,7 @@ class Settings extends DomNode implements IControllerEle {
                 item._selectedEl.innerHTML = opt.selectedText || opt.html || "";
             }
 
+            // 隐藏设置项的选项
             if (item._optionEl) {
                 // eslint-disable-next-line no-param-reassign
                 item._optionEl.style.display = "none";
@@ -127,6 +136,7 @@ class Settings extends DomNode implements IControllerEle {
         });
     }
 
+    // 渲染类型为select的设置项的所有的选项
     private renderOptions(): void {
         this.items.forEach((item) => {
             if (item.type !== "select") return;
@@ -136,6 +146,7 @@ class Settings extends DomNode implements IControllerEle {
                 item._optionEl = this.popover.panelEl.appendChild(createEle("div"));
             }
 
+            // 无选项元素只有选项配置，则循环添加每个选项元素
             if (!item._optionEls && item.options) {
                 // eslint-disable-next-line no-param-reassign
                 item._optionEls = item.options.map((opt) => {
@@ -152,11 +163,13 @@ class Settings extends DomNode implements IControllerEle {
                 }
             });
 
+            // 设置每个选项不可见
             // eslint-disable-next-line no-param-reassign
             item._optionEl.style.display = "none";
         });
     }
 
+    // 点击设置项的事件处理函数
     private onItemClick = (item: ISettingItem) => () => {
         if (item.type === "switch") {
             // eslint-disable-next-line no-param-reassign
@@ -170,6 +183,7 @@ class Settings extends DomNode implements IControllerEle {
         }
     };
 
+    // 点击设置项选项的事件处理函数
     private onOptionClick = (item: ISettingItem, option: ISettingItemOption) => () => {
         if (item.value !== option.value) {
             // eslint-disable-next-line no-param-reassign
@@ -182,6 +196,7 @@ class Settings extends DomNode implements IControllerEle {
         this.showHomePage(item._optionEl as HTMLElement);
     };
 
+    // 展示设置面板
     show = () => {
         this.player.emit(EVENT.POPOVER_SHOW_CHANGE, this.id);
         if (this.popoverTimer) {
