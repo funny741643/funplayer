@@ -1,4 +1,3 @@
-import { Tooltip } from "../../../components/tooltip";
 import { EVENT } from "../../../constants";
 import { Player } from "../../../player";
 import { addDispose, Dispose } from "../../../utils/dispose";
@@ -27,7 +26,7 @@ class Time extends DomNode implements Dispose {
         this.totalText.textContent = formatTime(n);
     }
 
-    init(player: Player, toolTip: Tooltip) {
+    init(player: Player) {
         addClass(this.el, "controller_time");
         this.playedText = this.el.appendChild(createEle("span"));
         this.slashText = this.el.appendChild(createEle("span"));

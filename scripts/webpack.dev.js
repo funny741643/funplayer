@@ -31,7 +31,8 @@ module.exports = (env) => {
             // 启用gzip压缩
             compress: true,
             // 如果想让自己的服务器可以被外部访问,应这样指定:
-            host: "0.0.0.0",
+            // host: "0.0.0.0",
+            host: "localhost",
             // 启用webpack的热模块替换特性
             hot: true,
             // 告诉dev-server在服务器已经启动后打开浏览器，设置其为true以打开自己的默认浏览器
