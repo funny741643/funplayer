@@ -58,3 +58,26 @@ export function formatTime(s: number): string {
     const seconds = Math.floor((s / 3600) % 60);
     return `${padStart(hour)}:${padStart(minute)}:${padStart(seconds)}`;
 }
+
+// eslint-disable-next-line consistent-return
+export function deepCopy(dst: any, src: any) {
+    if (typeof (src) === "object" && typeof (dst) === "object") {
+        Object.keys(src).forEach((key) => {
+            if (typeof (src[key]) === "object" && !(src[key] instanceof Node)) {
+                if (!dst[key]) {
+                    // eslint-disable-next-line no-param-reassign
+                    dst[key] = src[key];
+                } else {
+                    deepCopy(dst[key], src[key]);
+                }
+            } else if (Array.isArray(src[key])) {
+                // eslint-disable-next-line no-param-reassign
+                dst[key] = Array.isArray(dst[key]) ? dst[key].concat(src[key]) : src[key];
+            } else {
+                // eslint-disable-next-line no-param-reassign
+                dst[key] = src[key];
+            }
+        });
+        return dst;
+    }
+}
