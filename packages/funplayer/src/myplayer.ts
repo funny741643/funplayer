@@ -1,12 +1,15 @@
 import { Context } from "./context";
-// import { processOptions } from "./options";
-import { IPlayerOptions } from "./types";
+import { processOptions, IPlayerOptions } from "./options";
+import { findDomById } from "./utils/dom";
 
 export class Myplayer extends Context {
-    // private config: IPlayerOptions;
+    private config: IPlayerOptions;
+
+    private root: HTMLElement | null;
 
     constructor(options: IPlayerOptions) {
-        super();
-        // this.config = processOptions(options);
+        super(options);
+        this.config = processOptions(options);
+        this.root = findDomById(`#${this.config.id}`);
     }
 }

@@ -7,6 +7,18 @@ const SELECTOR_REGEX = /([\w-]+)?(?:#([\w-]+))?((?:\.(?:[\w-]+))*)/;
 
 const svgNS = "http://www.w3.org/2000/svg";
 
+export function findDomById(id: string): HTMLElement | null {
+    let dom: HTMLElement | null = null;
+    try {
+        dom = document.querySelector(id);
+    } catch {
+        if (id.indexOf("#") === 0) {
+            dom = document.getElementById(id.slice(1));
+        }
+    }
+    return dom;
+}
+
 export function getEle(
     el: HTMLElement | string | undefined,
 ): HTMLElement | null {

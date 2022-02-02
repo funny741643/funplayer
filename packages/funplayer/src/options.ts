@@ -1,24 +1,51 @@
 // 播放器配置参数
 
-import { IPlayerOptions } from "./types";
+import { deepCopy } from "./utils/tool";
+
+export interface IVideoConfigs {
+    autoplay?: boolean;
+    autobuffer?: boolean;
+    loop?: boolean;
+    muted?: boolean;
+    playsinline?: boolean;
+    preload?: "none" | "metadata" | "auto";
+    poster?: string;
+    src?: string;
+    crossorigin?: "anonymous" | "use-credentials";
+}
+
+export interface IPlayerConfigs {
+    id: string;
+    width?: number;
+    height?: number;
+    lang?: string;
+    volume?: number;
+    playbackRateUnit?: Array<number>;
+    isShowCoverPreview?: boolean;
+    playNext?: Array<string>;
+    download?: boolean;
+    screenshot?: boolean;
+}
+
+export type IPlayerOptions = IPlayerConfigs & IVideoConfigs
 
 // 默认配置项
-const defaultOptions = {
+const defaultOptions: Partial<IPlayerOptions> = {
     width: 600,
     height: 337.5,
     lang:
         (document.documentElement.getAttribute("lang")
         || navigator.language
         || "zh-cn").toLocaleLowerCase(),
+    volume: 0.6,
     playsinline: true,
     preload: "auto",
     crossorigin: "anonymous",
-    volume: 0.6,
-    // 是否展示控制条，控制条由多个控件组成
-    controls: true,
-    // 关闭某个内部控件选项
-    ignores: [],
 };
+
+export function processOptions(options: IPlayerOptions): IPlayerOptions {
+    return deepCopy(defaultOptions, options);
+}
 
 // 内置控件
 const defaultController = [
@@ -34,7 +61,6 @@ const defaultController = [
     "loading",
     "error",
 ];
-
 // const defaultOptions: Partial<IPlayerOptions> = {
 //     // 控件配置项
 //     controller: {
