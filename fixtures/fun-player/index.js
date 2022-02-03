@@ -24,6 +24,7 @@ window.onload = function () {
     // registerIcon('enterFullscreen', createIcon(full));
   
     const player = new FunPlayer.Player({
+      id: "root",
       // container: rootEle,
       // src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       src: 'https://vortesnail.github.io/qier-player-demo/static/media/video480p.d116ba09.mp4',
@@ -31,8 +32,8 @@ window.onload = function () {
       // src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
     });
   
-    player.mount(rootEle);
+    // player.mount(rootEle);
     // player.volume = 0.5;
-    player.play();
+    // player.play();
   };
   

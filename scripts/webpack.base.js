@@ -13,7 +13,7 @@ const PATHS = {
 // 蛇形转为大驼峰式
 const rename = (target) => {
     return target
-        .replace(/^funplayer/i, "FunPlayer")
+        .replace(/^fun-player/i, "FunPlayer")
         .replace(/-([A-Za-z])/g, (_, c) => c.toUpperCase());
 };
 
