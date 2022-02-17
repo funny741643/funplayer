@@ -1,4 +1,5 @@
-import Player from ".";
+// import { EventEmitter } from "eventemitter3";
+
 import { Emitter } from "./mitt";
 import { IPlayerOptions, IVideoConfigs } from "./options";
 import { createEle } from "./utils/dom";

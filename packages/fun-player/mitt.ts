@@ -2,9 +2,9 @@ type Handler<T = unknown> = (event: T) => void;
 
 export type EventHandlerList<T = unknown> = Array<Handler<T>>
 
-export type EventHandlerMap<Events extends Record<string, unknown>> = Map<
-    string, EventHandlerList<Events[keyof Events]>
->
+// export type EventHandlerMap<Events extends Record<string, unknown>> = Map<
+//     string, EventHandlerList<Events[keyof Events]>
+// >
 
 export interface IEmitter {
     on(type: string, handler: Handler): void;

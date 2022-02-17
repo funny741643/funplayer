@@ -2,7 +2,7 @@ import { Context } from "./context";
 import { processOptions, IPlayerOptions } from "./options";
 import { addClass, createEle, findDomById } from "./utils/dom";
 
-interface IPlugin {
+export interface IPlugin {
     name: string;
     descriptor: unknown;
 }
@@ -12,9 +12,9 @@ export class Player extends Context {
 
     private root: HTMLElement | null;
 
-    private controls: HTMLElement;
+    public controls: HTMLElement;
 
-    private static readonly plugins: Record<string, unknown> = Object.create(null);
+    public readonly plugins: Record<string, unknown> = Object.create(null);
 
     constructor(options: IPlayerOptions) {
         super(options);
@@ -25,6 +25,7 @@ export class Player extends Context {
             unselectable: "on",
         });
         addClass((this.root as HTMLElement), "player");
+        this.root?.appendChild(this.video);
         this.root?.appendChild(this.controls);
 
         if (this.config.width) {
@@ -45,16 +46,16 @@ export class Player extends Context {
     }
 
     // 插件安装
-    static install(name: string, descriptor: unknown) {
+    install(name: string, descriptor: unknown) {
         if (!this.plugins[name]) {
             this.plugins[name] = descriptor;
         }
     }
 
     // 安装插件列表
-    static installAll(list: Array<IPlugin>) {
+    installAll(list: Array<IPlugin>) {
         list.forEach((item) => {
-            Player.install(item.name, item.descriptor);
+            this.install(item.name, item.descriptor);
         });
     }
 }
